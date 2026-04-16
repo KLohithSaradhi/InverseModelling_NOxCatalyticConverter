@@ -17,7 +17,6 @@ class InverseData(Dataset):
         mat = sio.loadmat(mat_file)
 
         self.t, self.F_NOx_sensor = load_timeseries(mat, "F_NOx_sensor")
-        _, self.R_NOx_sensor = load_timeseries(mat, "R_NOx_sensor")
         _, self.Dosing = load_timeseries(mat, "Dosing")
         _, self.Temp = load_timeseries(mat, "Temp")
         _, self.ExhaustFlow = load_timeseries(mat, "ExhaustFlow")
@@ -28,6 +27,8 @@ class InverseData(Dataset):
         self.output = np.load(outputs_npy)
         self.k = np.load(ks_npy)
 
+        self.num_time_steps = len(self.output[0])
+
     def __len__(self):
         return len(self.output)
     
@@ -37,7 +38,6 @@ class InverseData(Dataset):
 
         model_input =torch.stack([
             torch.tensor(self.F_NOx_sensor[idx], dtype=torch.float32),
-            torch.tensor(self.R_NOx_sensor[idx], dtype=torch.float32),
             torch.tensor(self.Dosing[idx], dtype=torch.float32),
             torch.tensor(self.Temp[idx], dtype=torch.float32),
             torch.tensor(self.ExhaustFlow[idx], dtype=torch.float32),
@@ -46,13 +46,17 @@ class InverseData(Dataset):
             torch.tensor(self.Temp_DOC_up[idx], dtype=torch.float32),
             torch.tensor(output, dtype=torch.float32)
         ], dim=0)
-        # returns 9x11993 tensor 
+        # returns 8x11993 tensor 
 
         model_output = torch.tensor(k, dtype=torch.float32)
         # return 1x6 tensor
 
 
         ##### process the above tensors as needed for your model #####
+
+        random_time = torch.randint(0, self.num_time_steps)
+
+
 
         return model_input, model_output
 
