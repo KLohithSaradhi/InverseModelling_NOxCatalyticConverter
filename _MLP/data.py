@@ -128,4 +128,18 @@ class InverseData(Dataset):
         model_input = torch.concatenate((current_time_step_data, next_time_step_f_NOx.unsqueeze(0), next_time_step_output.unsqueeze(0)))
 
         return model_input.squeeze(-1), model_output
+    
+    def to(self, device):
+        self.F_NOx_sensor = torch.tensor(self.F_NOx_sensor, dtype=torch.float32).to(device)
+        self.Dosing = torch.tensor(self.Dosing, dtype=torch.float32).to(device)
+        self.Temp = torch.tensor(self.Temp, dtype=torch.float32).to(device)
+        self.ExhaustFlow = torch.tensor(self.ExhaustFlow, dtype=torch.float32).to(device)
+        self.adblue_mg = torch.tensor(self.adblue_mg, dtype=torch.float32).to(device)
+        self.O2 = torch.tensor(self.O2, dtype=torch.float32).to(device)
+        self.Temp_DOC_up = torch.tensor(self.Temp_DOC_up, dtype=torch.float32).to(device)
+        self.output = torch.tensor(self.output, dtype=torch.float32).to(device)
+
+        self.k = torch.tensor(self.k, dtype=torch.float32).to(device)
+
+        return self
 
