@@ -71,14 +71,14 @@ class InverseData(Dataset):
             with open("./norm_params/output_norm.json", "w") as f:
                 json.dump(self.modelOutput_NORM_PARAMS, f)
 
-        self.F_NOx_sensor = (self.F_NOx_sensor - min(self.F_NOx_sensor))/(max(self.F_NOx_sensor) - min(self.F_NOx_sensor))
-        self.Dosing= (self.Dosing - min(self.Dosing))/(max(self.Dosing) - min(self.Dosing))
-        self.Temp = (self.Temp - min(self.Temp))/(max(self.Temp) - min(self.Temp))
-        self.ExhaustFlow = (self.ExhaustFlow - min(self.ExhaustFlow))/(max(self.ExhaustFlow) - min(self.ExhaustFlow))
-        self.adblue_mg = (self.adblue_mg - min(self.adblue_mg))/(max(self.adblue_mg) - min(self.adblue_mg))
-        self.O2 = (self.O2 - min(self.O2))/(max(self.O2) - min(self.O2))
-        self.Temp_DOC_up = (self.Temp_DOC_up - min(self.Temp_DOC_up))/(max(self.Temp_DOC_up) - min(self.Temp_DOC_up))
-        self.output = (self.output - np.min(self.output))/(np.max(self.output) - np.min(self.output))
+        # self.F_NOx_sensor = (self.F_NOx_sensor - min(self.F_NOx_sensor))/(max(self.F_NOx_sensor) - min(self.F_NOx_sensor))
+        # self.Dosing= (self.Dosing - min(self.Dosing))/(max(self.Dosing) - min(self.Dosing))
+        # self.Temp = (self.Temp - min(self.Temp))/(max(self.Temp) - min(self.Temp))
+        # self.ExhaustFlow = (self.ExhaustFlow - min(self.ExhaustFlow))/(max(self.ExhaustFlow) - min(self.ExhaustFlow))
+        # self.adblue_mg = (self.adblue_mg - min(self.adblue_mg))/(max(self.adblue_mg) - min(self.adblue_mg))
+        # self.O2 = (self.O2 - min(self.O2))/(max(self.O2) - min(self.O2))
+        # self.Temp_DOC_up = (self.Temp_DOC_up - min(self.Temp_DOC_up))/(max(self.Temp_DOC_up) - min(self.Temp_DOC_up))
+        # self.output = (self.output - np.min(self.output))/(np.max(self.output) - np.min(self.output))
 
         self.k[:,0] = (self.k[:,0] - np.min(self.k[:,0]))/(np.max(self.k[:,0]) - np.min(self.k[:,0]))
         self.k[:,1] = (self.k[:,1] - np.min(self.k[:,1]))/(np.max(self.k[:,1]) - np.min(self.k[:,1]))
