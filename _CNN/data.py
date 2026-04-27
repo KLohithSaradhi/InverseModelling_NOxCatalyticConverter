@@ -1,19 +1,22 @@
 import numpy as np
 import scipy.io as sio
-
 from torch.utils.data import Dataset
 import torch
 
 def load_timeseries(mat_dict, name):
+    
     """Extract a Simulink Structure With Time saved in a .mat file."""
+    
     obj = mat_dict[name][0, 0]
     t = np.asarray(obj["time"]).squeeze().astype(float)
     v = np.asarray(obj["signals"][0, 0]["values"]).squeeze().astype(float)
+    
     return t, v
 
 
 class InverseData(Dataset):
     def __init__(self, mat_file, outputs_npy, ks_npy):
+        
         mat = sio.loadmat(mat_file)
 
         self.t, self.F_NOx_sensor = load_timeseries(mat, "F_NOx_sensor")
@@ -33,10 +36,14 @@ class InverseData(Dataset):
         return len(self.output)
     
     def __getitem__(self, idx):
+        
         output = self.output[idx]
         k = self.k[idx]
+        
+        # return 8x11993 tensor
 
         model_input =torch.stack([
+            
             torch.tensor(self.F_NOx_sensor[idx], dtype=torch.float32),
             torch.tensor(self.Dosing[idx], dtype=torch.float32),
             torch.tensor(self.Temp[idx], dtype=torch.float32),
@@ -45,11 +52,13 @@ class InverseData(Dataset):
             torch.tensor(self.O2[idx], dtype=torch.float32),
             torch.tensor(self.Temp_DOC_up[idx], dtype=torch.float32),
             torch.tensor(output, dtype=torch.float32)
+            
         ], dim=0)
-        # returns 8x11993 tensor 
 
-        model_output = torch.tensor(k, dtype=torch.float32)
         # return 1x6 tensor
+        
+        model_output = torch.tensor(k, dtype=torch.float32)
+
 
 
         ##### process the above tensors as needed for your model #####
