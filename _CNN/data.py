@@ -44,16 +44,17 @@ class InverseData(Dataset):
 
         model_input =torch.stack([
             
-            torch.tensor(self.F_NOx_sensor[idx], dtype=torch.float32),
-            torch.tensor(self.Dosing[idx], dtype=torch.float32),
-            torch.tensor(self.Temp[idx], dtype=torch.float32),
-            torch.tensor(self.ExhaustFlow[idx], dtype=torch.float32),
-            torch.tensor(self.adblue_mg[idx], dtype=torch.float32),
-            torch.tensor(self.O2[idx], dtype=torch.float32),
-            torch.tensor(self.Temp_DOC_up[idx], dtype=torch.float32),
+            torch.tensor(self.F_NOx_sensor, dtype=torch.float32),
+            torch.tensor(self.Dosing, dtype=torch.float32),
+            torch.tensor(self.Temp, dtype=torch.float32),
+            torch.tensor(self.ExhaustFlow, dtype=torch.float32),
+            torch.tensor(self.adblue_mg, dtype=torch.float32),
+            torch.tensor(self.O2, dtype=torch.float32),
+            torch.tensor(self.Temp_DOC_up, dtype=torch.float32),
             torch.tensor(output, dtype=torch.float32)
             
         ], dim=0)
+
 
         # return 1x6 tensor
         
@@ -63,7 +64,7 @@ class InverseData(Dataset):
 
         ##### process the above tensors as needed for your model #####
 
-        random_time = torch.randint(0, self.num_time_steps)
+        # random_time = torch.randint(0, self.num_time_steps)
 
 
 
