@@ -132,16 +132,15 @@ class InverseData(Dataset):
                 self.valid_samples.append((run_idx, t_idx))
 
     def __len__(self):
-        return len(self.valid_samples)
+        return len(self.output)
     
     def __getitem__(self, idx):
+        
+        output = torch.tensor(self.output[idx], dtype=torch.float32)
+        branch_input = torch.tensor(self.k[idx], dtype=torch.float32)
 
-        run_idx, time_idx = self.valid_samples[idx]
-
-        output = self.output[run_idx]
-        k = self.k[run_idx]
-
-        model_input =torch.stack([
+        trunk_input =torch.stack([
+            
             torch.tensor(self.F_NOx_sensor, dtype=torch.float32),
             torch.tensor(self.Dosing, dtype=torch.float32),
             torch.tensor(self.Temp, dtype=torch.float32),
@@ -149,26 +148,18 @@ class InverseData(Dataset):
             torch.tensor(self.adblue_mg, dtype=torch.float32),
             torch.tensor(self.O2, dtype=torch.float32),
             torch.tensor(self.Temp_DOC_up, dtype=torch.float32),
+            # torch.tensor(output, dtype=torch.float32)
+            
         ], dim=0)
-        # 8x11993 tensor 
-
-        k = torch.tensor(k, dtype=torch.float32)
-
-        model_output = torch.tensor(output, dtype=torch.float32)
-        # 1x11993 tensor
 
 
         ##### process the above tensors as needed for your model #####
 
-        # print(model_input.shape)
+        # random_time = torch.randint(0, self.num_time_steps)
 
-        current_time_step_data = model_input[:,time_idx]
-        next_time_step_f_NOx, current_time_step_output = model_input[0,time_idx+1], model_output[time_idx+1]
 
-        model_input = torch.concatenate((current_time_step_data, next_time_step_f_NOx.unsqueeze(0), current_time_step_output.unsqueeze(0), k))
-        model_output = model_output[time_idx]
 
-        return model_input.squeeze(-1), model_output
+        return branch_input, trunk_input.permute(1,0), output.unsqueeze(0).permute(1,0)
     
     def to(self, device):
         self.F_NOx_sensor = torch.tensor(self.F_NOx_sensor, dtype=torch.float32).to(device)
