@@ -52,12 +52,12 @@ class GRUModel(nn.Module):
         return predictions
     
 class OperatorNetwork(nn.Module):
-    def __init__(self, trunk_input_size, branch_input_size,  p = 16):
+    def __init__(self, trunk_input_size, branch_input_size, num_layers=2,  p = 16):
         super(OperatorNetwork, self).__init__()
 
 
-        self.trunk = GRUModel(input_size=trunk_input_size, hidden_size=16, num_layers=2, output_size=p)
-        self.branch = MLP([branch_input_size, 16, p])
+        self.trunk = GRUModel(input_size=trunk_input_size, hidden_size=p, num_layers=num_layers, output_size=p)
+        self.branch = MLP([branch_input_size, p, p])
 
     def forward(self, seq, A):
         basis = self.trunk(seq)

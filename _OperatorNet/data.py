@@ -88,7 +88,7 @@ class InverseData(Dataset):
         return len(self.output)
     
     def __getitem__(self, idx):
-        output = torch.tensor(self.output[idx], dtype=torch.float32)
+        output = torch.tensor(self.output[idx], dtype=torch.float32).unsqueeze(1)
         branch_input = torch.tensor(self.k[idx], dtype=torch.float32)
         trunk_input = self.trunk_input_base
 
