@@ -77,7 +77,7 @@ class Net(nn.Module):
 
 # Model_Check = CNN(channels_in = 8)
 
-# x = torch.randn(1, 8, 11993)
+# x = torch.randn(8, 11993)
 
 # with torch.no_grad():
 #   print("Inputs:", x.shape)
