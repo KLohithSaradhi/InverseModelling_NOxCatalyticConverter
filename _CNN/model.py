@@ -10,22 +10,22 @@ class CNN(nn.Module):
             nn.Conv1d(channels_in, 64, kernel_size = 3, stride = 1, padding = 1),
             nn.ReLU(),
 
-            nn.MaxPool1d(kernel_size = 2, stride = 2),
+            nn.MaxPool1d(kernel_size = 4, stride = 4),
 
-            nn.Conv1d(64, 256, kernel_size = 3, stride = 1, padding = 1),
+            nn.Conv1d(64, 64, kernel_size = 3, stride = 1, padding = 1),
             nn.ReLU(),
 
-            nn.MaxPool1d(kernel_size = 2, stride = 2),
+            nn.MaxPool1d(kernel_size = 4, stride = 4),
 
-            nn.Conv1d(256, 512, kernel_size = 3, stride = 1, padding = 1),
+            nn.Conv1d(64, 64, kernel_size = 3, stride = 1, padding = 1),
             nn.ReLU(),
 
-            nn.MaxPool1d(kernel_size = 2, stride = 2)
+            nn.MaxPool1d(kernel_size = 4, stride = 4)
 
         )
 
         self.flatten = nn.Flatten()
-        self.FullConn_1 = nn.Linear(1499 * 512, 1500)
+        self.FullConn_1 = nn.Linear(11968, 1500)
         self.ReLU_FC = nn.ReLU()
         self.FullConn_2 = nn.Linear(1500, 512)
         self.ReLU_FC = nn.ReLU()
